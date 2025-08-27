@@ -1,18 +1,18 @@
 // Конфигурация игры для Phaser 3
 const gameConfig = {
     type: Phaser.AUTO,
-    width: 375,  // Стандартная ширина мобильного телефона
-    height: 667, // Стандартная высота мобильного телефона (16:9)
+    width: 414,  // Максимальная ширина для высокого качества
+    height: 896, // Максимальная высота для высокого качества
     parent: 'game-container',
     backgroundColor: '#667eea',
     scale: {
         mode: Phaser.Scale.FIT, // Фиксированный размер для мобильного формата
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 375,
-        height: 667,
+        width: 414,
+        height: 896,
         min: {
-            width: 320,
-            height: 568
+            width: 375,
+            height: 667
         },
         max: {
             width: 414,  // Максимальная ширина iPhone Plus
@@ -35,15 +35,18 @@ const gameConfig = {
         antialias: true,
         roundPixels: false,
         powerPreference: 'high-performance',
-        // Улучшаем качество рендеринга для мобильных
+        // Максимальное качество рендеринга для мобильных
         antialias: true,
         roundPixels: false,
-        // Добавляем поддержку высокого DPI
-        resolution: Math.max(window.devicePixelRatio || 1, 2),
+        // Максимальная поддержка высокого DPI
+        resolution: Math.max(window.devicePixelRatio || 1, 4),
         // Улучшаем качество текстур
         mipmapFilter: 'LINEAR',
         // Улучшаем сглаживание
-        smoothFactor: 1
+        smoothFactor: 1,
+        // Дополнительные настройки качества
+        backgroundColor: '#667eea',
+        transparent: false
     },
     audio: {
         disableWebAudio: false
@@ -78,47 +81,47 @@ function getDeviceType() {
     return 'mobile';
 }
 
-// Настройки для мобильного вертикального формата
+// Настройки для мобильного вертикального формата с высоким качеством
 const screenConfig = {
     mobile: {
-        width: 375,
-        height: 667,
-        quality: 'high',
-        fontSize: 16,
-        strokeThickness: 2,
+        width: 414,
+        height: 896,
+        quality: 'ultra',
+        fontSize: 20,
+        strokeThickness: 3,
         // Позиции для мобильного интерфейса
         ui: {
-            topBar: { y: 50 },
-            map: { y: 200 },
-            buttons: { y: 500, spacing: 60 },
-            info: { y: 120 }
+            topBar: { y: 80 },
+            map: { y: 300 },
+            buttons: { y: 700, spacing: 80 },
+            info: { y: 180 }
         }
     },
     // Всегда используем мобильный формат
     tablet: {
-        width: 375,
-        height: 667,
-        quality: 'high',
-        fontSize: 16,
-        strokeThickness: 2,
+        width: 414,
+        height: 896,
+        quality: 'ultra',
+        fontSize: 20,
+        strokeThickness: 3,
         ui: {
-            topBar: { y: 50 },
-            map: { y: 200 },
-            buttons: { y: 500, spacing: 60 },
-            info: { y: 120 }
+            topBar: { y: 80 },
+            map: { y: 300 },
+            buttons: { y: 700, spacing: 80 },
+            info: { y: 180 }
         }
     },
     desktop: {
-        width: 375,
-        height: 667,
-        quality: 'high',
-        fontSize: 16,
-        strokeThickness: 2,
+        width: 414,
+        height: 896,
+        quality: 'ultra',
+        fontSize: 20,
+        strokeThickness: 3,
         ui: {
-            topBar: { y: 50 },
-            map: { y: 200 },
-            buttons: { y: 500, spacing: 60 },
-            info: { y: 120 }
+            topBar: { y: 80 },
+            map: { y: 300 },
+            buttons: { y: 700, spacing: 80 },
+            info: { y: 180 }
         }
     }
 };

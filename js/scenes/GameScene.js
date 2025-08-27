@@ -120,11 +120,11 @@ class GameScene extends Phaser.Scene {
     }
 
     createMoldovaMap() {
-        // Получаем размеры экрана для мобильного формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
-        const centerX = gameWidth / 2;  // 187.5
-        const centerY = gameHeight * 0.4; // 266.8 (40% от высоты)
+        // Получаем размеры экрана для мобильного формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
+        const centerX = gameWidth / 2;  // 207
+        const centerY = gameHeight * 0.35; // 313.6 (35% от высоты)
         
         // Создаем контейнер для карты в верхней части экрана
         const mapContainer = this.add.container(centerX, centerY);
@@ -163,10 +163,10 @@ class GameScene extends Phaser.Scene {
             }
             console.log('Размеры изображения:', moldovaImage.width, 'x', moldovaImage.height);
             
-            // Масштабирование карты для мобильного вертикального формата
-            const scaleX = (gameWidth * 0.7) / moldovaImage.width;  // 70% от ширины экрана
-            const scaleY = (gameHeight * 0.35) / moldovaImage.height; // 35% от высоты экрана
-            const scale = Math.min(scaleX, scaleY, 1.0); // Ограничиваем масштаб для мобильного
+            // Масштабирование карты для мобильного формата с высоким качеством
+            const scaleX = (gameWidth * 0.75) / moldovaImage.width;  // 75% от ширины экрана
+            const scaleY = (gameHeight * 0.3) / moldovaImage.height; // 30% от высоты экрана
+            const scale = Math.min(scaleX, scaleY, 1.2); // Увеличиваем максимальный масштаб для качества
             
             moldovaImage.setScale(scale);
             mapContainer.add(moldovaImage);
@@ -184,9 +184,9 @@ class GameScene extends Phaser.Scene {
             // Fallback: создаем упрощенную карту высокого качества если изображение не загружено
             const moldovaShape = this.add.graphics();
             
-            // Размеры fallback карты для мобильного формата
-            const fallbackWidth = gameWidth * 0.5;  // 50% от ширины экрана
-            const fallbackHeight = gameHeight * 0.25; // 25% от высоты экрана
+            // Размеры fallback карты для мобильного формата с высоким качеством
+            const fallbackWidth = gameWidth * 0.6;  // 60% от ширины экрана
+            const fallbackHeight = gameHeight * 0.2; // 20% от высоты экрана
             
             // Улучшенная линия с антиалиасингом
             moldovaShape.lineStyle(4, 0xffffff, 1);
@@ -210,12 +210,12 @@ class GameScene extends Phaser.Scene {
             mapContainer.add(moldovaShape);
         }
         
-        // Добавляем название страны для мобильного формата
+        // Добавляем название страны для мобильного формата с высоким качеством
         const deviceType = getDeviceType();
-        const fontSize = screenConfig[deviceType].fontSize * 1.2; // Размер для мобильного
+        const fontSize = screenConfig[deviceType].fontSize * 1.4; // Увеличенный размер для качества
         const strokeThickness = screenConfig[deviceType].strokeThickness;
         
-        const countryName = this.add.text(0, -80, 'МОЛДОВА', {
+        const countryName = this.add.text(0, -100, 'МОЛДОВА', {
             fontSize: fontSize + 'px',
             fontFamily: 'Arial, sans-serif',
             color: '#ffffff',
@@ -448,9 +448,9 @@ class GameScene extends Phaser.Scene {
     }
 
     createNextDayButton() {
-        // Позиционирование для мобильного вертикального формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
+        // Позиционирование для мобильного вертикального формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
         const buttonX = gameWidth * 0.5;  // Центр экрана
         const buttonY = gameHeight * 0.75; // 75% от высоты экрана
         
@@ -505,9 +505,9 @@ class GameScene extends Phaser.Scene {
     }
 
     createActionsButton() {
-        // Позиционирование для мобильного вертикального формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
+        // Позиционирование для мобильного вертикального формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
         const buttonX = gameWidth * 0.5;  // Центр экрана
         const buttonY = gameHeight * 0.85; // 85% от высоты экрана
         
@@ -561,9 +561,9 @@ class GameScene extends Phaser.Scene {
     }
 
     createSaveButton() {
-        // Позиционирование для мобильного вертикального формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
+        // Позиционирование для мобильного вертикального формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
         const buttonX = gameWidth * 0.5;  // Центр экрана
         const buttonY = gameHeight * 0.95; // 95% от высоты экрана
         
@@ -617,9 +617,9 @@ class GameScene extends Phaser.Scene {
     }
     
     createDayInfo() {
-        // Информация о текущем дне для мобильного формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
+        // Информация о текущем дне для мобильного формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
         const infoX = gameWidth * 0.5;  // Центр экрана
         const infoY = gameHeight * 0.1; // 10% от высоты экрана
         
@@ -1109,9 +1109,9 @@ class GameScene extends Phaser.Scene {
     }
 
     showNotification(message, type = 'info') {
-        // Создаем временное уведомление для мобильного формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
+        // Создаем временное уведомление для мобильного формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
         const notificationX = gameWidth * 0.5;  // Центр экрана
         const notificationY = gameHeight * 0.65; // 65% от высоты экрана
         
@@ -1160,16 +1160,16 @@ class GameScene extends Phaser.Scene {
     }
 
     createFallbackScene() {
-        console.log('🛠️ Создание fallback сцены для мобильного формата...');
+        console.log('🛠️ Создание fallback сцены для мобильного формата с высоким качеством...');
         
         // Очищаем все существующие объекты
         this.children.removeAll(true);
         
-        // Получаем размеры экрана для мобильного формата
-        const gameWidth = this.game.config.width;  // 375
-        const gameHeight = this.game.config.height; // 667
-        const centerX = gameWidth / 2;  // 187.5
-        const centerY = gameHeight / 2; // 333.5
+        // Получаем размеры экрана для мобильного формата с высоким качеством
+        const gameWidth = this.game.config.width;  // 414
+        const gameHeight = this.game.config.height; // 896
+        const centerX = gameWidth / 2;  // 207
+        const centerY = gameHeight / 2; // 448
         
         // Создаем простую fallback сцену высокого качества
         const bg = this.add.graphics();

@@ -26,7 +26,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Улучшаем качество рендеринга */
+    /* Максимальное качество рендеринга */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -34,6 +34,11 @@ body {
     /* Принудительно устанавливаем мобильный вертикальный формат */
     max-width: 414px; /* Максимальная ширина iPhone Plus */
     margin: 0 auto;
+    
+    /* Улучшаем качество на мобильных */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 /* Улучшаем качество canvas для мобильных устройств */
@@ -60,13 +65,36 @@ body {
 @media (max-width: 414px) {
     #game-container {
         max-width: 100vw;
+        /* Максимальное качество на мобильных */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
     }
     
     #game-container canvas {
-        /* Улучшаем качество на мобильных */
+        /* Максимальное качество на мобильных */
         image-rendering: -webkit-optimize-contrast;
         image-rendering: -moz-crisp-edges;
         image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        
+        /* Улучшаем качество рендеринга */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
+        
+        /* Максимальное разрешение */
+        max-width: 100%;
+        height: auto;
+    }
+    
+    body {
+        /* Максимальное качество текста на мобильных */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        font-smooth: never;
+        -webkit-font-smooth: never;
     }
 }
 
