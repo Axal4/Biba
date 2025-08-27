@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мобильное тестирование Moldova</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 30px;
+        }
+        
+        .method {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 4px solid #00ff00;
+        }
+        
+        .method h3 {
+            color: #00ff00;
+            margin-top: 0;
+        }
+        
+        .step {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #2196F3;
+        }
+        
+        .step-number {
+            background: #2196F3;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: #00ff00;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        button:hover { background: #0056b3; }
+        
+        .telegram-info {
+            background: rgba(0, 136, 204, 0.2);
+            border: 1px solid #0088cc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .telegram-info h3 {
+            color: #0088cc;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Мобильное тестирование Moldova</h1>
+        
+        <div class="method">
+            <h3>🚀 Способ 1: Локальная сеть (рекомендуется)</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                Запустите <code>start_mobile_test.bat</code> на компьютере
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                Убедитесь, что телефон и компьютер в одной Wi-Fi сети
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                На телефоне откройте браузер и введите IP адрес компьютера
+            </div>
+            <div class="code">http://[IP_КОМПЬЮТЕРА]:8000</div>
+            
+            <button onclick="startLocalServer()">🚀 Запустить локальный сервер</button>
+        </div>
+
+        <div class="method">
+            <h3>🌐 Способ 2: Ngrok (для тестирования извне)</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                Установите Ngrok: <a href="https://ngrok.com/download" target="_blank" style="color: #00ff00;">https://ngrok.com/download</a>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                Запустите локальный сервер: <code>python -m http.server 8000</code>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                В новом терминале: <code>ngrok http 8000</code>
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                Скопируйте URL из Ngrok и откройте на телефоне
+            </div>
+        </div>
+
+        <div class="method">
+            <h3>📱 Способ 3: Эмуляция мобильного в браузере</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                Откройте игру в браузере
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                Нажмите F12 (Developer Tools)
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                Нажмите кнопку мобильного устройства (📱)
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                Выберите размер экрана (например, iPhone 12 Pro)
+            </div>
+            
+            <button onclick="openGame()">🎮 Открыть игру</button>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Важно:</strong> Для тестирования на реальном телефоне используйте способы 1 или 2. 
+            Способ 3 только эмулирует мобильное устройство на компьютере.
+        </div>
+
+        <div class="telegram-info">
+            <h3>📱 Интеграция с Telegram играми</h3>
+            <p>Для интеграции с Telegram играми нужно:</p>
+            <div class="step">
+                <span class="step-number">1</span>
+                Создать Telegram Bot через @BotFather
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                Разместить игру на хостинге (Heroku, Vercel, Netlify)
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                Настроить Web App в боте
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                Добавить кнопку "Играть" в бота
+            </div>
+            
+            <button onclick="showTelegramSetup()">🤖 Показать настройку Telegram</button>
+        </div>
+
+        <div class="success">
+            <strong>✅ Готово к тестированию!</strong> Выберите подходящий способ выше и протестируйте игру на мобильном устройстве.
+        </div>
+    </div>
+
+    <script>
+        function startLocalServer() {
+            // Открываем инструкцию по запуску локального сервера
+            window.open('start_mobile_test.bat', '_blank');
+        }
+
+        function openGame() {
+            // Открываем игру в новом окне
+            window.open('index.html', '_blank');
+        }
+
+        function showTelegramSetup() {
+            // Показываем инструкцию по настройке Telegram
+            alert('Инструкция по настройке Telegram:\n\n1. Создайте бота через @BotFather\n2. Разместите игру на хостинге\n3. Настройте Web App в боте\n4. Добавьте кнопку "Играть"\n\nПодробная инструкция будет создана в следующем обновлении.');
+        }
+
+        // Проверяем, на мобильном ли устройстве
+        function checkMobile() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                document.body.innerHTML = `
+                    <div class="container">
+                        <h1>📱 Добро пожаловать на мобильном устройстве!</h1>
+                        <div class="success">
+                            <p>Вы используете мобильное устройство. Для тестирования игры:</p>
+                            <p>1. Запустите <code>start_mobile_test.bat</code> на компьютере</p>
+                            <p>2. Убедитесь, что телефон и компьютер в одной Wi-Fi сети</p>
+                            <p>3. Откройте игру по IP адресу компьютера</p>
+                        </div>
+                        <button onclick="location.reload()">🔄 Обновить страницу</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Проверяем при загрузке
+        window.addEventListener('load', checkMobile);
+    </script>
+</body>
+</html>

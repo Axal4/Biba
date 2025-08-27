@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="28 дней">
+    
+    <title>28 дней - Игра о выборах в Молдове</title>
+    
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Phaser 3 -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Иконки -->
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Phaser будет рендерить игру здесь -->
+    </div>
+    
+    <!-- Основные скрипты игры -->
+    <!-- Данные игры загружаются первыми -->
+    <script src="js/data/gameData.js"></script>
+
+    <!-- Классы игровой логики -->
+    <script src="js/game/Region.js"></script>
+    <script src="js/game/Event.js"></script>
+    <script src="js/game/Action.js"></script>
+
+    <!-- Классы сцен -->
+    <script src="js/scenes/BootScene.js"></script>
+    <script src="js/scenes/MainMenuScene.js"></script>
+    <script src="js/scenes/GameScene.js"></script>
+    <script src="js/scenes/EventScene.js"></script>
+    <script src="js/scenes/GameOverScene.js"></script>
+
+    <!-- Основной менеджер игры и UI -->
+    <script src="js/game/GameManager.js"></script>
+    <script src="js/ui/UI.js"></script>
+    
+    <!-- Конфигурация игры загружается после всех сцен -->
+    <script src="js/config/gameConfig.js"></script>
+    
+    <!-- Главный файл инициализации игры должен быть последним -->
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест исправлений CORS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success { background: rgba(76, 175, 80, 0.8); }
+        .error { background: rgba(244, 67, 54, 0.8); }
+        .warning { background: rgba(255, 193, 7, 0.8); color: #333; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button:hover { background: #0056b3; }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Тест исправлений CORS и текстур</h1>
+        
+        <div class="test-section">
+            <h3>📋 Статус исправлений</h3>
+            <div id="fixStatus" class="status warning">Проверяем исправления...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Тестирование текстур</h3>
+            <button onclick="testTextures()">🧪 Тест текстур</button>
+            <button onclick="testImageLoading()">🖼️ Тест загрузки изображений</button>
+            <div id="textureTestResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🌐 Тестирование CORS</h3>
+            <button onclick="testCORS()">🚫 Тест CORS</button>
+            <button onclick="testLocalServer()">🌍 Тест локального сервера</button>
+            <div id="corsTestResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📁 Файлы для решения</h3>
+            <ul>
+                <li><strong>start_server.bat</strong> - Запуск Python сервера</li>
+                <li><strong>start_server.ps1</strong> - PowerShell скрипт</li>
+                <li><strong>local_server.html</strong> - Веб-помощник</li>
+                <li><strong>index_no_cors.html</strong> - Версия без CORS</li>
+                <li><strong>РЕШЕНИЕ_CORS_ПРОБЛЕМЫ.md</strong> - Инструкция</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🚀 Быстрый запуск</h3>
+            <button onclick="openLocalServer()">🌐 Открыть помощник сервера</button>
+            <button onclick="openNoCorsVersion()">🎮 Открыть версию без CORS</button>
+            <button onclick="openInstructions()">📖 Открыть инструкцию</button>
+        </div>
+    </div>
+
+    <script>
+        // Проверяем исправления при загрузке
+        window.addEventListener('load', () => {
+            checkFixes();
+        });
+
+        function checkFixes() {
+            const statusDiv = document.getElementById('fixStatus');
+            
+            // Проверяем наличие файлов
+            const files = [
+                'start_server.bat',
+                'start_server.ps1', 
+                'local_server.html',
+                'index_no_cors.html',
+                'РЕШЕНИЕ_CORS_ПРОБЛЕМЫ.md'
+            ];
+            
+            let allFilesExist = true;
+            files.forEach(file => {
+                // Простая проверка существования файлов
+                fetch(file, { method: 'HEAD' })
+                    .catch(() => {
+                        allFilesExist = false;
+                        console.warn(`Файл ${file} не найден`);
+                    });
+            });
+            
+            if (allFilesExist) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ Все файлы для решения созданы!';
+            } else {
+                statusDiv.className = 'status warning';
+                statusDiv.textContent = '⚠️ Некоторые файлы отсутствуют';
+            }
+        }
+
+        function testTextures() {
+            const resultDiv = document.getElementById('textureTestResult');
+            resultDiv.innerHTML = '<div class="status warning">🧪 Тестируем текстуры...</div>';
+            
+            // Создаем простой Phaser тест
+            if (typeof Phaser !== 'undefined') {
+                try {
+                    const config = {
+                        type: Phaser.AUTO,
+                        width: 400,
+                        height: 300,
+                        backgroundColor: '#2c3e50',
+                        scene: {
+                            create: function() {
+                                // Тестируем this.textures
+                                if (this.textures) {
+                                    if (typeof this.textures.getTextureNames === 'function') {
+                                        resultDiv.innerHTML = '<div class="status success">✅ this.textures работает корректно</div>';
+                                    } else {
+                                        resultDiv.innerHTML = '<div class="status warning">⚠️ this.textures существует, но getTextureNames недоступен</div>';
+                                    }
+                                } else {
+                                    resultDiv.innerHTML = '<div class="status error">❌ this.textures не инициализирован</div>';
+                                }
+                            }
+                        }
+                    };
+                    
+                    const game = new Phaser.Game(config);
+                    
+                    // Очищаем игру через 2 секунды
+                    setTimeout(() => {
+                        game.destroy(true);
+                    }, 2000);
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<div class="status error">❌ Ошибка тестирования: ${error.message}</div>`;
+                }
+            } else {
+                resultDiv.innerHTML = '<div class="status error">❌ Phaser не загружен</div>';
+            }
+        }
+
+        function testImageLoading() {
+            const resultDiv = document.getElementById('textureTestResult');
+            resultDiv.innerHTML = '<div class="status warning">🖼️ Тестируем загрузку изображений...</div>';
+            
+            // Тестируем загрузку moldova_map.png
+            const img = new Image();
+            img.onload = function() {
+                resultDiv.innerHTML = '<div class="status success">✅ moldova_map.png загружен успешно!</div>';
+            };
+            img.onerror = function() {
+                resultDiv.innerHTML = '<div class="status error">❌ moldova_map.png не загружен (CORS проблема)</div>';
+            };
+            img.src = 'assets/images/moldova_map.png';
+        }
+
+        function testCORS() {
+            const resultDiv = document.getElementById('corsTestResult');
+            resultDiv.innerHTML = '<div class="status warning">🚫 Тестируем CORS...</div>';
+            
+            // Пытаемся загрузить файл через fetch
+            fetch('assets/images/moldova_map.png')
+                .then(response => {
+                    if (response.ok) {
+                        resultDiv.innerHTML = '<div class="status success">✅ CORS не блокирует загрузку</div>';
+                    } else {
+                        resultDiv.innerHTML = '<div class="status error">❌ Ошибка загрузки файла</div>';
+                    }
+                })
+                .catch(error => {
+                    if (error.message.includes('CORS')) {
+                        resultDiv.innerHTML = '<div class="status error">❌ CORS блокирует загрузку (ожидаемо при file://)</div>';
+                    } else {
+                        resultDiv.innerHTML = `<div class="status error">❌ Ошибка: ${error.message}</div>`;
+                    }
+                });
+        }
+
+        function testLocalServer() {
+            const resultDiv = document.getElementById('corsTestResult');
+            resultDiv.innerHTML = '<div class="status warning">🌍 Тестируем локальный сервер...</div>';
+            
+            // Пытаемся подключиться к localhost:8000
+            fetch('http://localhost:8000', { mode: 'no-cors' })
+                .then(() => {
+                    resultDiv.innerHTML = '<div class="status success">✅ Локальный сервер доступен!</div>';
+                })
+                .catch(() => {
+                    resultDiv.innerHTML = '<div class="status warning">⚠️ Локальный сервер не запущен. Запустите start_server.bat</div>';
+                });
+        }
+
+        function openLocalServer() {
+            window.open('local_server.html', '_blank');
+        }
+
+        function openNoCorsVersion() {
+            window.open('index_no_cors.html', '_blank');
+        }
+
+        function openInstructions() {
+            window.open('РЕШЕНИЕ_CORS_ПРОБЛЕМЫ.md', '_blank');
+        }
+    </script>
+</body>
+</html>

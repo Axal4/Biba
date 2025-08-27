@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Простой тест изображения</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ccc;
+            margin: 20px 0;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Простой тест изображения moldova_map.png</h1>
+        
+        <div id="status">Проверяем изображение...</div>
+        
+        <div id="image-container">
+            <img src="assets/images/moldova_map.png" 
+                 alt="Карта Молдовы" 
+                 class="test-image"
+                 onload="imageLoaded()"
+                 onerror="imageError()">
+        </div>
+        
+        <div id="info"></div>
+    </div>
+
+    <script>
+        function imageLoaded() {
+            const status = document.getElementById('status');
+            const info = document.getElementById('info');
+            const img = document.querySelector('.test-image');
+            
+            status.innerHTML = '<div class="status success">✅ Изображение загружено успешно!</div>';
+            
+            info.innerHTML = `
+                <div class="status info">
+                    <strong>Информация об изображении:</strong><br>
+                    Размеры: ${img.naturalWidth} x ${img.naturalHeight} пикселей<br>
+                    Путь: ${img.src}<br>
+                    Полный URL: ${window.location.href}assets/images/moldova_map.png
+                </div>
+            `;
+        }
+        
+        function imageError() {
+            const status = document.getElementById('status');
+            const info = document.getElementById('info');
+            
+            status.innerHTML = '<div class="status error">❌ Ошибка загрузки изображения</div>';
+            
+            info.innerHTML = `
+                <div class="status error">
+                    <strong>Возможные причины ошибки:</strong><br>
+                    1. Файл не существует по указанному пути<br>
+                    2. Файл поврежден<br>
+                    3. Проблема с сервером<br>
+                    4. Проблема с CORS<br>
+                    <br>
+                    <strong>Проверьте:</strong><br>
+                    - Путь: assets/images/moldova_map.png<br>
+                    - Файл в папке проекта<br>
+                    - Консоль браузера на ошибки
+                </div>
+            `;
+        }
+        
+        // Дополнительная проверка через fetch
+        window.addEventListener('load', () => {
+            fetch('assets/images/moldova_map.png')
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ Файл найден через fetch');
+                        console.log('Размер:', response.headers.get('content-length'), 'байт');
+                        console.log('Тип:', response.headers.get('content-type'));
+                    } else {
+                        console.log('❌ Файл не найден через fetch, статус:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.log('❌ Ошибка fetch:', error.message);
+                });
+        });
+    </script>
+</body>
+</html>

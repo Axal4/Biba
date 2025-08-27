@@ -1,0 +1,44 @@
+{
+  "name": "28-days-moldova-game",
+  "version": "1.0.0",
+  "description": "Стратегическая игра о выборах в Молдове для Telegram Mini Apps",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -c-1",
+    "dev": "http-server -p 8000 -c-1 -o",
+    "build": "echo 'Проект не требует сборки'",
+    "test": "echo 'Тесты не настроены'",
+    "lint": "echo 'Линтер не настроен'"
+  },
+  "keywords": [
+    "game",
+    "phaser",
+    "telegram",
+    "mini-app",
+    "moldova",
+    "elections",
+    "strategy",
+    "html5"
+  ],
+  "author": "Разработчик игры '28 дней'",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/28-days-moldova-game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/28-days-moldova-game/issues"
+  },
+  "homepage": "https://github.com/username/28-days-moldova-game#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

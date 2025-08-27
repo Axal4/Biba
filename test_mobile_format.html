@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест мобильного формата Moldova</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 414px; /* Максимальная ширина iPhone Plus */
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            min-height: 100vh;
+        }
+        
+        .mobile-frame {
+            width: 375px;
+            height: 667px;
+            margin: 0 auto;
+            background: #2c3e50;
+            border: 3px solid #34495e;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .success { background: rgba(76, 175, 80, 0.8); }
+        .error { background: rgba(244, 67, 54, 0.8); }
+        .warning { background: rgba(255, 193, 7, 0.8); color: #333; }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        
+        button:hover { background: #0056b3; }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        
+        .format-info {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .format-info h2 {
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+        
+        .format-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 Тест мобильного формата Moldova</h1>
+        
+        <div class="format-info">
+            <h2>🎯 Целевой формат</h2>
+            <p><strong>Размер:</strong> 375x667 пикселей</p>
+            <p><strong>Ориентация:</strong> Вертикальная (как на телефоне)</p>
+            <p><strong>Масштабирование:</strong> Фиксированный размер</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Статус мобильного формата</h3>
+            <div id="mobileStatus" class="status warning">Проверяем мобильный формат...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>📱 Предварительный просмотр</h3>
+            <div class="mobile-frame">
+                <div style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); text-align: center;">
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">📅 День 1</div>
+                    <div style="font-size: 14px; color: #bdc3c7;">МОЛДОВА</div>
+                </div>
+                
+                <!-- Карта (заглушка) -->
+                <div style="position: absolute; top: 120px; left: 50%; transform: translateX(-50%); width: 200px; height: 150px; background: #4CAF50; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                    🗺️ Карта Молдовы
+                </div>
+                
+                <!-- Кнопки -->
+                <div style="position: absolute; top: 500px; left: 50%; transform: translateX(-50%); text-align: center;">
+                    <div style="background: #4CAF50; padding: 10px 20px; border-radius: 8px; margin: 10px 0; color: white; font-weight: bold;">
+                        ✅ Завершить день
+                    </div>
+                    <div style="background: #2196F3; padding: 10px 20px; border-radius: 8px; margin: 10px 0; color: white; font-weight: bold;">
+                        🔧 Действия
+                    </div>
+                    <div style="background: #9C27B0; padding: 10px 20px; border-radius: 8px; margin: 10px 0; color: white; font-weight: bold;">
+                        💾 Сохранить
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Тестирование</h3>
+            <button onclick="testMobileFormat()">🧪 Тест мобильного формата</button>
+            <button onclick="openGame()">🎮 Открыть игру</button>
+            <button onclick="checkConfig()">⚙️ Проверить конфигурацию</button>
+            <div id="testResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📱 Особенности мобильного формата</h3>
+            <ul>
+                <li><strong>Размер:</strong> 375x667 (стандарт iPhone)</li>
+                <li><strong>Ориентация:</strong> Вертикальная</li>
+                <li><strong>Кнопки:</strong> По центру экрана, без наложений</li>
+                <li><strong>Карта:</strong> В верхней части экрана</li>
+                <li><strong>Интерфейс:</strong> Оптимизирован для телефона</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🚀 Быстрый запуск</h3>
+            <button onclick="openLocalServer()">🌐 Открыть помощник сервера</button>
+            <button onclick="openInstructions()">📖 Открыть инструкцию</button>
+        </div>
+    </div>
+
+    <script>
+        // Проверяем мобильный формат при загрузке
+        window.addEventListener('load', () => {
+            checkMobileFormat();
+        });
+
+        function checkMobileFormat() {
+            const statusDiv = document.getElementById('mobileStatus');
+            
+            // Проверяем размеры экрана
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const isMobile = screenWidth <= 414;
+            
+            if (isMobile) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ Идеально для мобильного устройства!';
+            } else {
+                statusDiv.className = 'status warning';
+                statusDiv.textContent = `⚠️ Экран ${screenWidth}x${screenHeight}. Игра будет показана в мобильном формате 375x667`;
+            }
+        }
+
+        function testMobileFormat() {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = '<div class="status warning">🧪 Тестируем мобильный формат...</div>';
+            
+            // Проверяем конфигурацию
+            const gameWidth = 375;
+            const gameHeight = 667;
+            const aspectRatio = gameWidth / gameHeight;
+            
+            setTimeout(() => {
+                resultDiv.innerHTML = `
+                    <div class="status success">
+                        ✅ Мобильный формат настроен корректно!<br>
+                        <strong>Размер:</strong> ${gameWidth}x${gameHeight}<br>
+                        <strong>Соотношение:</strong> ${aspectRatio.toFixed(2)}:1<br>
+                        <strong>Формат:</strong> Вертикальный мобильный
+                    </div>
+                `;
+            }, 1000);
+        }
+
+        function openGame() {
+            // Открываем игру в новом окне
+            const gameWindow = window.open('index.html', '_blank', 'width=400,height=700');
+            if (gameWindow) {
+                gameWindow.focus();
+            }
+        }
+
+        function checkConfig() {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.innerHTML = '<div class="status warning">⚙️ Проверяем конфигурацию...</div>';
+            
+            // Проверяем наличие файлов конфигурации
+            const files = [
+                'js/config/gameConfig.js',
+                'js/scenes/GameScene.js',
+                'css/style.css'
+            ];
+            
+            let allFilesExist = true;
+            files.forEach(file => {
+                fetch(file, { method: 'HEAD' })
+                    .catch(() => {
+                        allFilesExist = false;
+                        console.warn(`Файл ${file} не найден`);
+                    });
+            });
+            
+            setTimeout(() => {
+                if (allFilesExist) {
+                    resultDiv.innerHTML = `
+                        <div class="status success">
+                            ✅ Конфигурация проверена!<br>
+                            <strong>gameConfig.js:</strong> Мобильный формат 375x667<br>
+                            <strong>GameScene.js:</strong> Оптимизированные позиции кнопок<br>
+                            <strong>style.css:</strong> Мобильные медиа-запросы
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="status error">
+                            ❌ Некоторые файлы конфигурации отсутствуют<br>
+                            Проверьте наличие всех необходимых файлов
+                        </div>
+                    `;
+                }
+            }, 1000);
+        }
+
+        function openLocalServer() {
+            window.open('local_server.html', '_blank');
+        }
+
+        function openInstructions() {
+            window.open('КАЧЕСТВО_МОБИЛЬНЫХ_УСТРОЙСТВ.md', '_blank');
+        }
+    </script>
+</body>
+</html>

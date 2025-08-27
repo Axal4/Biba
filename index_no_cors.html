@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moldova - Игра без CORS</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .cors-warning {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 193, 7, 0.9);
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ffc107;
+            z-index: 1000;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .cors-warning a {
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .cors-warning a:hover {
+            text-decoration: underline;
+        }
+        
+        .fallback-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+        }
+        
+        .fallback-content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .fallback-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .fallback-content button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        
+        .fallback-content button:hover {
+            background: #0056b3;
+        }
+        
+        .fallback-content button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Предупреждение о CORS -->
+        <div class="cors-warning">
+            ⚠️ <strong>Проблема CORS:</strong> Игра может не загружаться из-за политики безопасности браузера. 
+            <a href="http://localhost:8000" target="_blank">Запустите через локальный сервер</a> или 
+            <a href="local_server.html" target="_blank">используйте наш помощник</a>.
+        </div>
+        
+        <!-- Fallback контент -->
+        <div class="fallback-content" id="fallback-content">
+            <h1>🎮 Moldova Game</h1>
+            <p>Добро пожаловать в игру о политической борьбе в Молдове!</p>
+            <p>Выберите сторону и попробуйте завоевать популярность среди регионов.</p>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Загрузка игры...</p>
+            </div>
+            
+            <button onclick="tryLoadGame()" id="load-btn">🚀 Запустить игру</button>
+            <button onclick="showInstructions()">📖 Инструкции</button>
+            <button onclick="openLocalServer()">🌐 Локальный сервер</button>
+        </div>
+    </div>
+
+    <script>
+        let gameLoaded = false;
+        let loadAttempts = 0;
+        const maxLoadAttempts = 3;
+
+        // Проверяем, можем ли мы загрузить игру
+        function tryLoadGame() {
+            const loading = document.getElementById('loading');
+            const loadBtn = document.getElementById('load-btn');
+            
+            loading.style.display = 'block';
+            loadBtn.disabled = true;
+            loadBtn.textContent = 'Загрузка...';
+            
+            loadAttempts++;
+            
+            // Пытаемся загрузить основные компоненты игры
+            setTimeout(() => {
+                if (loadAttempts >= maxLoadAttempts) {
+                    showFallbackMessage();
+                    return;
+                }
+                
+                try {
+                    // Проверяем доступность Phaser
+                    if (typeof Phaser !== 'undefined') {
+                        startGame();
+                    } else {
+                        // Пытаемся загрузить Phaser
+                        loadPhaser();
+                    }
+                } catch (error) {
+                    console.error('Ошибка загрузки игры:', error);
+                    if (loadAttempts < maxLoadAttempts) {
+                        loadBtn.disabled = false;
+                        loadBtn.textContent = '🔄 Попробовать снова';
+                        loading.style.display = 'none';
+                    } else {
+                        showFallbackMessage();
+                    }
+                }
+            }, 2000);
+        }
+
+        function loadPhaser() {
+            // Создаем элемент script для загрузки Phaser
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js';
+            script.onload = () => {
+                console.log('Phaser загружен, запускаем игру...');
+                startGame();
+            };
+            script.onerror = () => {
+                console.error('Не удалось загрузить Phaser');
+                showFallbackMessage();
+            };
+            document.head.appendChild(script);
+        }
+
+        function startGame() {
+            try {
+                // Скрываем fallback контент
+                document.getElementById('fallback-content').style.display = 'none';
+                
+                // Создаем простую игру
+                const config = {
+                    type: Phaser.AUTO,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    parent: 'game-container',
+                    backgroundColor: '#2c3e50',
+                    scene: {
+                        preload: preload,
+                        create: create,
+                        update: update
+                    },
+                    render: {
+                        antialias: true,
+                        roundPixels: false,
+                        powerPreference: 'high-performance'
+                    }
+                };
+
+                const game = new Phaser.Game(config);
+                gameLoaded = true;
+                
+            } catch (error) {
+                console.error('Ошибка создания игры:', error);
+                showFallbackMessage();
+            }
+        }
+
+        function preload() {
+            // Пытаемся загрузить изображение
+            try {
+                this.load.image('moldova_map', 'assets/images/moldova_map.png');
+            } catch (error) {
+                console.error('Ошибка загрузки изображения:', error);
+            }
+        }
+
+        function create() {
+            try {
+                // Создаем заголовок
+                this.add.text(400, 100, 'MOLDOVA GAME', {
+                    fontSize: '48px',
+                    fill: '#ffffff',
+                    stroke: '#000000',
+                    strokeThickness: 4,
+                    shadow: { offsetX: 2, offsetY: 2, color: '#000000', blur: 4 }
+                }).setOrigin(0.5);
+
+                // Пытаемся показать карту
+                try {
+                    if (this.textures.exists('moldova_map')) {
+                        const map = this.add.image(400, 300, 'moldova_map');
+                        map.setScale(0.8);
+                        this.add.text(400, 500, 'Карта Молдовы загружена!', {
+                            fontSize: '24px',
+                            fill: '#00ff00'
+                        }).setOrigin(0.5);
+                    } else {
+                        this.add.text(400, 300, 'Карта не загружена\n(проблема CORS)', {
+                            fontSize: '24px',
+                            fill: '#ff0000',
+                            align: 'center'
+                        }).setOrigin(0.5);
+                    }
+                } catch (error) {
+                    console.error('Ошибка отображения карты:', error);
+                }
+
+                // Создаем кнопки
+                const startBtn = this.add.text(400, 400, '🎮 Начать игру', {
+                    fontSize: '32px',
+                    fill: '#ffffff',
+                    backgroundColor: '#007bff',
+                    padding: { x: 20, y: 10 }
+                }).setOrigin(0.5).setInteractive();
+
+                startBtn.on('pointerdown', () => {
+                    this.add.text(400, 450, 'Игра в разработке...', {
+                        fontSize: '24px',
+                        fill: '#ffff00'
+                    }).setOrigin(0.5);
+                });
+
+            } catch (error) {
+                console.error('Ошибка создания сцены:', error);
+            }
+        }
+
+        function update() {
+            // Обновление игры
+        }
+
+        function showFallbackMessage() {
+            const fallback = document.getElementById('fallback-content');
+            fallback.innerHTML = `
+                <h1>❌ Игра не загрузилась</h1>
+                <p>К сожалению, не удалось загрузить игру из-за ограничений браузера.</p>
+                <p><strong>Решение:</strong> Запустите игру через локальный веб-сервер.</p>
+                
+                <button onclick="openLocalServer()">🌐 Запустить локальный сервер</button>
+                <button onclick="downloadPython()">📥 Скачать Python</button>
+                <button onclick="location.reload()">🔄 Обновить страницу</button>
+            `;
+        }
+
+        function showInstructions() {
+            alert(`🎮 ИНСТРУКЦИИ ПО ЗАПУСКУ:
+
+1. 🌐 Локальный сервер (рекомендуется):
+   - Запустите start_server.bat или start_server.ps1
+   - Откройте http://localhost:8000
+
+2. 📥 Установка Python:
+   - Скачайте с python.org
+   - Установите с галочкой "Add to PATH"
+   - Запустите start_server.bat
+
+3. 🔧 VS Code Live Server:
+   - Установите VS Code
+   - Установите расширение Live Server
+   - Правый клик на index.html → Open with Live Server
+
+4. ⚠️ Проблема CORS:
+   - Браузер блокирует загрузку ресурсов через file://
+   - Нужен HTTP сервер (localhost:8000)`);
+        }
+
+        function openLocalServer() {
+            window.open('local_server.html', '_blank');
+        }
+
+        function downloadPython() {
+            window.open('https://www.python.org/downloads/', '_blank');
+        }
+
+        // Автоматическая попытка загрузки при загрузке страницы
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (!gameLoaded) {
+                    console.log('Автоматическая попытка загрузки игры...');
+                    tryLoadGame();
+                }
+            }, 1000);
+        });
+
+        // Обработка ошибок
+        window.addEventListener('error', (event) => {
+            console.error('Глобальная ошибка:', event.error);
+            if (!gameLoaded) {
+                showFallbackMessage();
+            }
+        });
+    </script>
+</body>
+</html>

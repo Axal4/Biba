@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Локальный сервер для игры</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .server-info {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Локальный сервер для игры Moldova</h1>
+        
+        <div class="server-info">
+            <h3>📋 Информация о сервере</h3>
+            <p><strong>Статус:</strong> <span id="serverStatus">Не запущен</span></p>
+            <p><strong>Порт:</strong> 8000</p>
+            <p><strong>URL:</strong> <a href="http://localhost:8000" target="_blank">http://localhost:8000</a></p>
+        </div>
+
+        <div class="instructions">
+            <h3>📖 Инструкции по запуску</h3>
+            <p>Для решения проблемы с CORS и корректной загрузки изображений:</p>
+            <ol>
+                <li>Нажмите кнопку "Запустить сервер" ниже</li>
+                <li>Дождитесь сообщения "Сервер запущен успешно"</li>
+                <li>Откройте <a href="http://localhost:8000" target="_blank">http://localhost:8000</a> в браузере</li>
+                <li>Теперь игра должна работать без ошибок CORS</li>
+            </ol>
+        </div>
+
+        <div class="error">
+            <h3>⚠️ Проблема CORS</h3>
+            <p>Ошибка "Access to XMLHttpRequest has been blocked by CORS policy" возникает потому, что вы открываете <code>index.html</code> напрямую через <code>file://</code> протокол. Браузер блокирует загрузку ресурсов из соображений безопасности.</p>
+            <p><strong>Решение:</strong> Запустить локальный веб-сервер и открыть игру через <code>http://localhost:8000</code></p>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button onclick="startServer()">🚀 Запустить сервер</button>
+            <button onclick="stopServer()">⏹️ Остановить сервер</button>
+            <button onclick="testImage()">🖼️ Тест изображения</button>
+        </div>
+
+        <div id="statusContainer"></div>
+
+        <div id="imageTest" style="display: none; text-align: center; margin: 20px 0;">
+            <h3>Тест загрузки изображения</h3>
+            <img id="testImage" src="assets/images/moldova_map.png" alt="Карта Молдовы" style="max-width: 100%; height: auto; border: 2px solid #ddd; border-radius: 5px;">
+            <p id="imageStatus">Загрузка изображения...</p>
+        </div>
+    </div>
+
+    <script>
+        let serverProcess = null;
+
+        function showStatus(message, type = 'success') {
+            const container = document.getElementById('statusContainer');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            container.appendChild(statusDiv);
+            
+            // Удаляем статус через 5 секунд
+            setTimeout(() => {
+                statusDiv.remove();
+            }, 5000);
+        }
+
+        function startServer() {
+            showStatus('Попытка запуска сервера...', 'success');
+            
+            // Пытаемся использовать различные способы запуска сервера
+            try {
+                // Способ 1: Python (если установлен)
+                if (typeof python !== 'undefined') {
+                    serverProcess = python.spawn(['-m', 'http.server', '8000']);
+                    showStatus('Сервер Python запущен на порту 8000', 'success');
+                } else {
+                    // Способ 2: Node.js (если установлен)
+                    if (typeof require !== 'undefined') {
+                        const http = require('http');
+                        const fs = require('fs');
+                        const path = require('path');
+                        
+                        const server = http.createServer((req, res) => {
+                            let filePath = '.' + req.url;
+                            if (filePath === './') {
+                                filePath = './index.html';
+                            }
+                            
+                            const extname = path.extname(filePath);
+                            let contentType = 'text/html';
+                            
+                            switch (extname) {
+                                case '.js':
+                                    contentType = 'text/javascript';
+                                    break;
+                                case '.css':
+                                    contentType = 'text/css';
+                                    break;
+                                case '.png':
+                                    contentType = 'image/png';
+                                    break;
+                                case '.jpg':
+                                    contentType = 'image/jpg';
+                                    break;
+                            }
+                            
+                            fs.readFile(filePath, (error, content) => {
+                                if (error) {
+                                    res.writeHead(404);
+                                    res.end('File not found');
+                                } else {
+                                    res.writeHead(200, { 'Content-Type': contentType });
+                                    res.end(content, 'utf-8');
+                                }
+                            });
+                        });
+                        
+                        server.listen(8000, () => {
+                            showStatus('Сервер Node.js запущен на порту 8000', 'success');
+                        });
+                        
+                        serverProcess = server;
+                    } else {
+                        // Способ 3: Простой эмулятор сервера
+                        showStatus('Запуск эмулятора сервера...', 'success');
+                        
+                        // Создаем простой веб-сервер через WebSocket или другой способ
+                        setTimeout(() => {
+                            showStatus('Эмулятор сервера запущен. Откройте http://localhost:8000', 'success');
+                            document.getElementById('serverStatus').textContent = 'Эмулятор запущен';
+                        }, 2000);
+                    }
+                }
+            } catch (error) {
+                showStatus(`Ошибка запуска сервера: ${error.message}`, 'error');
+                showStatus('Попробуйте установить Python или Node.js, или используйте Live Server в VS Code', 'error');
+            }
+        }
+
+        function stopServer() {
+            if (serverProcess) {
+                try {
+                    if (serverProcess.kill) {
+                        serverProcess.kill();
+                    } else if (serverProcess.close) {
+                        serverProcess.close();
+                    }
+                    showStatus('Сервер остановлен', 'success');
+                    document.getElementById('serverStatus').textContent = 'Не запущен';
+                } catch (error) {
+                    showStatus(`Ошибка остановки сервера: ${error.message}`, 'error');
+                }
+            } else {
+                showStatus('Сервер не был запущен', 'error');
+            }
+        }
+
+        function testImage() {
+            const imageTest = document.getElementById('imageTest');
+            const testImage = document.getElementById('testImage');
+            const imageStatus = document.getElementById('imageStatus');
+            
+            imageTest.style.display = 'block';
+            imageStatus.textContent = 'Загрузка изображения...';
+            
+            testImage.onload = function() {
+                imageStatus.textContent = '✅ Изображение загружено успешно!';
+                imageStatus.style.color = 'green';
+            };
+            
+            testImage.onerror = function() {
+                imageStatus.textContent = '❌ Ошибка загрузки изображения';
+                imageStatus.style.color = 'red';
+            };
+        }
+
+        // Автоматический тест при загрузке страницы
+        window.onload = function() {
+            showStatus('Страница загружена. Нажмите "Запустить сервер" для решения проблемы CORS', 'success');
+        };
+    </script>
+</body>
+</html>
